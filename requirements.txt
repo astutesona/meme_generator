@@ -1,0 +1,12 @@
+Flask==3.0.3
+Flask-SocketIO==5.3.6
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Werkzeug==3.0.3
+OpenCV-python==4.10.0.84
+MediaPipe==0.10.14
+numpy==1.26.4
+pandas==2.2.2
+pyttsx3==2.90
+eventlet==0.36.1
+python-dotenv==1.0.1

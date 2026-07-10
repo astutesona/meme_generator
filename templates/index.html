@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row min-vh-100 align-items-center justify-content-center p-3">
+    <!-- Webcam & CV Feed -->
+    <div class="col-lg-6 mb-4">
+        <div class="card glass-card">
+            <div class="card-header d-flex justify-content-between align-items-center border-0">
+                <h5 class="mb-0 fw-bold"><i class="fa-solid fa-camera text-primary me-2"></i> Live Feed</h5>
+                <div>
+                    <span class="badge bg-success" id="fpsCounter">FPS: 0</span>
+                    <button class="btn btn-sm btn-outline-info ms-2" id="toggleCamera"><i class="fa-solid fa-video-slash"></i></button>
+                </div>
+            </div>
+            <div class="card-body p-2 position-relative">
+                <!-- Video Element -->
+                <video id="webcam" class="w-100 rounded" autoplay playsinline style="transform: scaleX(-1); display: none;"></video>
+                <!-- Canvas for drawing landmarks -->
+                <canvas id="output_canvas" class="w-100 rounded position-absolute top-0 start-0" style="transform: scaleX(-1);"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Reaction Output -->
+    <div class="col-lg-5">
+        <div class="card glass-card reaction-card text-center p-4">
+            <!-- Gesture Details -->
+            <h3 id="gestureName" class="fw-bold text-gradient">Hello!</h3>
+            <p id="confidenceDisplay" class="text-muted mb-2">Confidence: <span class="fw-bold text-success">--%</span></p>
+            
+            <!-- AI Caption -->
+            <div class="caption-box my-3 p-3 rounded">
+                <p id="aiCaption" class="fs-5 mb-0 fw-semibold fst-italic">"Waiting for gesture..."</p>
+            </div>
+
+            <!-- Media Container (Meme / GIF) -->
+            <div class="media-container mt-3 overflow-hidden rounded">
+                <img id="memeDisplay" src="{{ url_for('static', filename='images/placeholder_meme.png') }}" alt="Reaction Meme" class="img-fluid meme-img d-none">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- MediaPipe Hands -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+<script src="{{ url_for('static', filename='js/vision.js') }}"></script>
+{% endblock %}

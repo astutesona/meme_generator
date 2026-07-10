@@ -1,0 +1,97 @@
+:root {
+    --bg-color-dark: #121212;
+    --bg-color-light: #f8f9fa;
+    --text-color-dark: #e0e0e0;
+    --text-color-light: #212529;
+    --glass-bg-dark: rgba(255, 255, 255, 0.05);
+    --glass-bg-light: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+[data-theme="dark"] {
+    --bg-color: var(--bg-color-dark);
+    --text-color: var(--text-color-dark);
+    --glass-bg: var(--glass-bg-dark);
+}
+
+[data-theme="light"] {
+    --bg-color: var(--bg-color-light);
+    --text-color: var(--text-color-light);
+    --glass-bg: var(--glass-bg-light);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+}
+
+/* Glassmorphism */
+.glass-navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Text Gradients */
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* AI Caption Box */
+.caption-box {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #764ba2;
+}
+
+/* Media Container */
+.media-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    min-height: 250px;
+}
+
+.meme-img {
+    max-height: 350px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--glass-border);
+    transition: transform 0.3s ease;
+}
+
+/* Animations */
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    80% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
