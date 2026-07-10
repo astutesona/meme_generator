@@ -30,18 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Socket.IO Setup
-    window.socket = io();
-    
-    window.socket.on('connect', () => {
-        console.log('Connected to server via WebSocket');
-    });
-
-    // You can handle reactions coming from server here
-    window.socket.on('reaction', (data) => {
-        updateUI(data);
-    });
-
     // Animate updates with GSAP and play audio/TTS
     window.updateUI = function(data) {
         const { gesture, emoji, confidence, caption, meme_url, sound } = data;

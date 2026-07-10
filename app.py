@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_socketio import SocketIO, emit
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config
@@ -15,7 +14,6 @@ app.config.from_object(Config)
 
 # Initialize extensions
 db.init_app(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -77,11 +75,12 @@ def logout():
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
 
-@socketio.on('process_landmarks')
-def handle_landmarks(data):
+@app.route('/process_landmarks', methods=['POST'])
+def handle_landmarks():
+    data = request.json
     hands_landmarks = data.get('landmarks', [])
     if not hands_landmarks or len(hands_landmarks) == 0:
-        return
+        return jsonify({"error": "No landmarks found"}), 400
     
     # 1. Recognize Gesture
     gesture_name = gesture_detector.recognize_gesture(hands_landmarks)
@@ -95,10 +94,10 @@ def handle_landmarks(data):
     # 4. Add confidence (mock for rule-based, would be actual probability from a model)
     reaction_data['confidence'] = 0.95 if gesture_name != "Unknown" else 0.0
     
-    # Emit back to client
-    emit('reaction', reaction_data)
+    # Return back to client
+    return jsonify(reaction_data)
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    socketio.run(app, debug=True, port=5000)
+    app.run(debug=True, port=5000)

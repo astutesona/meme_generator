@@ -44,10 +44,20 @@ function onResults(results) {
       drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 1});
     }
     
-    // Throttle socket emitting (e.g., every 5 frames) to avoid overloading the server
-    if (frameCount % 5 === 0 && window.socket) {
-        // Send ALL hands to the server for complex two-hand gesture logic (e.g., Namaste, Heart)
-        window.socket.emit('process_landmarks', { landmarks: results.multiHandLandmarks });
+    // Throttle HTTP requests (e.g., every 15 frames) to avoid overloading the server on Vercel
+    if (frameCount % 15 === 0) {
+        fetch('/process_landmarks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ landmarks: results.multiHandLandmarks })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (window.updateUI) {
+                window.updateUI(data);
+            }
+        })
+        .catch(err => console.error("Error processing landmarks", err));
     }
   }
   canvasCtx.restore();
